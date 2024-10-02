@@ -1,7 +1,7 @@
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.Comparator;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class MyArrayListTests {
@@ -27,18 +27,18 @@ class MyArrayListTests {
     @DisplayName("Checked size of list")
     @Test
     void testSize() {
-        Assertions.assertEquals(7, list.size());
+        assertEquals(7, list.size());
     }
     @DisplayName("Checked empty of list")
     @Test
     void testIsEmpty() {
-        Assertions.assertFalse(list::isEmpty);
+        assertFalse(list::isEmpty);
     }
 
     @DisplayName("Contains element in list")
     @Test
     void testContains() {
-        Assertions.assertTrue(list.contains(5));
+        assertTrue(list.contains(5));
     }
 
     @DisplayName("QuickSort this list")
@@ -57,25 +57,25 @@ class MyArrayListTests {
             }
         }
         list.quickSort(new MyComparatorInTest());
-        Assertions.assertArrayEquals(secondList.toArray(), list.toArray());
+        assertArrayEquals(secondList.toArray(), list.toArray());
     }
 
     @DisplayName("Add element into list")
     @Test
     void testAdd() {
         list.add(25);
-        Assertions.assertEquals(25, list.getElement(list.size() - 1));
+        assertEquals(25, list.getElement(list.size() - 1));
     }
     @DisplayName("Add element into list at the specific position")
     @Test
     void testAddInIndex() {
         list.addInIndex(5, 500);
-        Assertions.assertEquals(500, list.getElement(5));
+        assertEquals(500, list.getElement(5));
     }
     @DisplayName("Get an item from the list")
     @Test
     void testGetOfIndex() {
-        Assertions.assertEquals(5, list.getElement(0));
+        assertEquals(5, list.getElement(0));
     }
 
     @DisplayName("Remove element at the specific position")
@@ -84,16 +84,16 @@ class MyArrayListTests {
         int size = list.size();
         int value = list.getElement(0);
         list.remove(0);
-        Assertions.assertAll("Remove element" ,
-                () -> Assertions.assertEquals(size - 1, list.size()),
-                () -> Assertions.assertNotEquals(value, list.getElement(0)),
-                () -> Assertions.assertEquals(8, list.getElement(5)));
+        assertAll("Remove element" ,
+                () -> assertEquals(size - 1, list.size()),
+                () -> assertNotEquals(value, list.getElement(0)),
+                () -> assertEquals(8, list.getElement(5)));
 
     }
     @DisplayName("Clearing the list")
     @Test
     void testClear() {
         list.clear();
-        Assertions.assertTrue(list.isEmpty());
+        assertTrue(list.isEmpty());
     }
 }

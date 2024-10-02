@@ -3,7 +3,6 @@ import java.util.*;
 /**
  * MyArrayList<T> extends MyAbstractList<T>, works as a ArrayList, also contains a quickSort method
 */
-
 public class MyArrayList<T> extends MyAbstractList<T> {
     private Object[] elementData;
     private int size;
