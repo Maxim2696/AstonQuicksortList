@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
         MyArrayList<Integer> list = new MyArrayList<>();
         list.add(5);
@@ -17,7 +17,7 @@ public class main {
             public int compare(Integer o1, Integer o2) {
                 return o1.compareTo(o2);
             }
-        }, 0, list.size() - 1);
+        });
         System.out.println(Arrays.toString(list.toArray()));
     }
 }

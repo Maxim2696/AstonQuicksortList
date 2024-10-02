@@ -49,7 +49,7 @@ public class MyArrayListTests {
     @Test
     void testQuickSort() {
         Collections.sort(secondList);
-        list.quickSort(new MyComparator(), 0, list.size() - 1);
+        list.quickSort(new MyComparator());
         Assertions.assertArrayEquals(secondList.toArray(), list.toArray());
     }
     @Test
