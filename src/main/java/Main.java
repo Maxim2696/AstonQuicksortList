@@ -11,6 +11,7 @@ public class Main {
         list.add(10);
         list.add(-2);
         list.add(8);
+        list.remove(2);
         System.out.println(Arrays.toString(list.toArray()));
         list.quickSort(new Comparator<Integer>() {
             @Override
