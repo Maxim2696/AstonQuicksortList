@@ -1,10 +1,8 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.BooleanSupplier;
 
 
@@ -76,7 +74,7 @@ public class MyArrayListTests {
                 () -> Assertions.assertNotEquals(value, list.get(0)));
     }
     @Test
-    void testClean() {
+    void testClear() {
         list.clear();
         Assertions.assertTrue(list.isEmpty());
     }
