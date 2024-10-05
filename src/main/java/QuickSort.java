@@ -5,7 +5,7 @@ import java.util.Comparator;
  * @param <T> - the type of items to be sorted
  */
 public class QuickSort<T> {
-    private final Object[] sortElementData;
+    private final T[] sortElementData;
     private final int size;
 
     /**
@@ -13,7 +13,7 @@ public class QuickSort<T> {
      * @param sortElementData - array for sorted
      */
     public QuickSort(Object[] sortElementData, int size) {
-        this.sortElementData = new Object[size];
+        this.sortElementData = (T[]) new Object[size];
         System.arraycopy(sortElementData, 0, this.sortElementData, 0, size);
         this.size = size;
     }
@@ -21,16 +21,14 @@ public class QuickSort<T> {
     private void quickSort(Comparator<T> comparator, int low, int high) {
         if (low >= high) return;
         int middle = low + (high - low) / 2;
-        T pivot = (T) sortElementData[middle];
+        T pivot = sortElementData[middle];
         int i = low;
         int j = high;
         while (i <= j) {
-            while (comparator.compare((T) sortElementData[i], pivot) < 0) i++;
-            while (comparator.compare((T) sortElementData[j], pivot) > 0) j--;
+            while (comparator.compare(sortElementData[i], pivot) < 0) i++;
+            while (comparator.compare(sortElementData[j], pivot) > 0) j--;
             if (i <= j) {
-                T temp = (T) sortElementData[i];
-                sortElementData[i] = sortElementData[j];
-                sortElementData[j] = temp;
+                swap(i, j);
                 i++;
                 j--;
             }
@@ -39,6 +37,12 @@ public class QuickSort<T> {
             quickSort(comparator, low, j);
         }
         if (high > i) quickSort(comparator, i, high);
+    }
+
+    private void swap(int i, int j) {
+        T temp = sortElementData[i];
+        sortElementData[i] = sortElementData[j];
+        sortElementData[j] = temp;
     }
 
     /**

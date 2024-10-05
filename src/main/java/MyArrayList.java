@@ -4,7 +4,7 @@ import java.util.*;
  * MyArrayList<T> extends MyAbstractList<T>, works as a ArrayList, also contains a quickSort method
 */
 public class MyArrayList<T> extends MyAbstractList<T> {
-    private Object[] elementData;
+    private T[] elementData;
     private int size;
     private static final int DEFAULT_CAPACITY = 10;
     private static final Object[] DEFAULT_EMPTY_ELEMENT_DATA = {};
@@ -13,7 +13,7 @@ public class MyArrayList<T> extends MyAbstractList<T> {
      * Creates an instance of the class
      */
     public MyArrayList() {
-        elementData = DEFAULT_EMPTY_ELEMENT_DATA;
+        elementData = (T[]) new Object[DEFAULT_CAPACITY];
     }
 
     /**
@@ -23,10 +23,10 @@ public class MyArrayList<T> extends MyAbstractList<T> {
      */
     public MyArrayList(int capacityArray) {
         if (capacityArray > 0) {
-            this.elementData = new Object[capacityArray];
+            this.elementData = (T[]) new Object[capacityArray];
         }
         else if (capacityArray == 0) {
-            this.elementData = DEFAULT_EMPTY_ELEMENT_DATA;
+            this.elementData = (T[]) new Object[DEFAULT_CAPACITY];
         }
         else {
             throw new IllegalArgumentException("Illegal Capacity: " + capacityArray);
@@ -43,16 +43,19 @@ public class MyArrayList<T> extends MyAbstractList<T> {
         System.arraycopy(sort.getSortElementData(comparator), 0, elementData, 0, size);
 
     }
+
     private Object[] grow(int minCapacity) {
         int oldCapacity = elementData.length;
         if (oldCapacity > 0 || elementData != DEFAULT_EMPTY_ELEMENT_DATA) {
-            int newCapacity = oldCapacity + (oldCapacity / 2);
+            int newCapacity = oldCapacity + minCapacity;
             return Arrays.copyOf(elementData, newCapacity);
         }
         else {
-            return elementData = new Object[Math.max(DEFAULT_CAPACITY, minCapacity)];
+            elementData = (T[]) new Object[Math.max(DEFAULT_CAPACITY, minCapacity)];
+            return elementData;
         }
     }
+
     private Object[] grow() {return grow(size + 1);}
 
     /**
@@ -63,12 +66,13 @@ public class MyArrayList<T> extends MyAbstractList<T> {
     @Override
     public boolean add(T element) {
         if (size == elementData.length) {
-            elementData = grow();
+            elementData = (T[]) grow();
         }
         elementData[size] = element;
         size++;
         return true;
     }
+
     /**
      * Returned size of the list
      * @return value
@@ -86,11 +90,16 @@ public class MyArrayList<T> extends MyAbstractList<T> {
     public void addInIndex(int index, T element) {
         if (index > size || index < 0) throw new ArrayIndexOutOfBoundsException();
         if (size == elementData.length) {
-            elementData = grow();
+            elementData = (T[]) grow();
         }
-        System.arraycopy(elementData, index, elementData, index + 1, size - index);
-        elementData[index] = element;
-        size++;
+        if (index == size) {
+            add(element);
+        }
+        else {
+            System.arraycopy(elementData, index, elementData, index + 1, size - index);
+            elementData[index] = element;
+            size++;
+        }
     }
 
     /**
@@ -101,7 +110,7 @@ public class MyArrayList<T> extends MyAbstractList<T> {
     @Override
     public T getElement(int index) {
         Objects.checkIndex(index, size);
-        return (T) elementData[index];
+        return elementData[index];
     }
 
     /**
@@ -142,8 +151,10 @@ public class MyArrayList<T> extends MyAbstractList<T> {
     public T remove(int index) {
         Objects.checkIndex(index, size);
         T result = getElement(index);
-        for (int i = index; i < size; i++) {
-            elementData[i] = elementData[i + 1];
+        if (index != size - 1) {
+            for (int i = index; i < size - 1; i++) {
+                elementData[i] = elementData[i + 1];
+            }
         }
         elementData[size - 1] = null;
         size--;
@@ -157,15 +168,16 @@ public class MyArrayList<T> extends MyAbstractList<T> {
      */
     @Override
     public boolean contains(Object o) {
-
         for (int i = 0; i < size; i++) {
             if (o == null && elementData[i] == null) return true;
+            if (elementData[i] == null) continue;
             if (elementData[i].equals(o)) {
                 return true;
             }
         }
         return false;
     }
+
     /**
      * Replaces the element at the specified position in this list with the specified element (optional operation).
      * @param index index of the element to replace
@@ -175,7 +187,7 @@ public class MyArrayList<T> extends MyAbstractList<T> {
     @Override
     public T set(int index, T element) {
         Objects.checkIndex(index, size);
-        T result = (T) elementData[index];
+        T result = elementData[index];
         elementData[index] = element;
         return result;
     }
@@ -187,12 +199,11 @@ public class MyArrayList<T> extends MyAbstractList<T> {
     @Override
     public void addAll(MyAbstractList<T> list) {
         int length = list.size();
-        if (length > size) {
-            elementData = new Object[length];
+        int amountEmptyPosition = elementData.length - size;
+        if (length >= amountEmptyPosition) {
+            elementData = (T[]) grow(length);
         }
-        for(int i = 0; i < length; i++) {
-            elementData[i] = list.getElement(i);
-            size++;
-        }
+        System.arraycopy(list.toArray(), 0, elementData, size, length);
+        size += length;
     }
 }
